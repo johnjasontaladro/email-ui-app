@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch } from "react-redux";
+import MainHeader from "./components/MainHeader";
+import SavedSection from "./components/SavedSection";
+import UnRead from "./components/UnRead";
+import { setData } from "./reducers/email";
+import emailData from "./data/email-data";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  const dispatch = useDispatch();
+  dispatch(setData(emailData));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="p-4 text-sm">
+      <MainHeader />
+      <UnRead />
+      <SavedSection />
+      <ToastContainer position="top-right" />
     </div>
   );
 }
