@@ -2,6 +2,10 @@
 
 This is a simple Email UI App created using React JS, Redux Toolkit and TailWindCSS.
 
+## Demo
+
+https://johnjasontaladro.github.io/email-ui-app/
+
 ## Screenshots
 
 ![App Screenshot](https://raw.githubusercontent.com/johnjasontaladro/email-ui-app/master/screenshots/screenshot1.PNG)
@@ -33,6 +37,22 @@ Start the server
 
 ```bash
   npm run start
+```
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test:cypress
+```
+
+## Test Data
+
+Test data used located in
+
+```bash
+  src/data/email-data.js
 ```
 
 ## Tech Stack
