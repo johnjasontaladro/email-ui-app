@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import EmailBox from "./EmailBox";
+import EmailBoxEmpty from "./EmailBoxEmpty";
 
 function UnRead() {
   const emailData = useSelector((state) => state.email.value);
@@ -17,7 +18,8 @@ function UnRead() {
           </span>
         </div>
       </div>
-      {emailData.unRead.map((email, index) => (
+      {emailData.unReadCurrentItems.length === 0 && <EmailBoxEmpty />}
+      {emailData.unReadCurrentItems.map((email, index) => (
         <EmailBox email={email} status="unread" key={index} />
       ))}
     </div>

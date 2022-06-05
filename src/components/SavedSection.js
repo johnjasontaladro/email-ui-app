@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import EmailBox from "./EmailBox";
+import EmailBoxEmpty from "./EmailBoxEmpty";
 
 function SavedSection() {
   const emailData = useSelector((state) => state.email.value);
@@ -17,6 +18,7 @@ function SavedSection() {
           </span>
         </div>
       </div>
+      {emailData.saved.length === 0 && <EmailBoxEmpty />}
       {emailData.saved.map((email, index) => (
         <EmailBox email={email} status="saved" key={index} />
       ))}

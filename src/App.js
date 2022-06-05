@@ -1,22 +1,32 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MainHeader from "./components/MainHeader";
 import SavedSection from "./components/SavedSection";
 import UnRead from "./components/UnRead";
-import { setData } from "./reducers/email";
-import emailData from "./data/email-data";
+import { getEmailData } from "./reducers/email";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+import Loader from "./components/Loader";
 
 function App() {
   const dispatch = useDispatch();
-  dispatch(setData(emailData));
+  const emailStatus = useSelector((state) => state.email.status);
+
+  useEffect(() => {
+    dispatch(getEmailData());
+  }, [dispatch]);
 
   return (
     <div className="p-4 text-sm">
-      <MainHeader />
-      <UnRead />
-      <SavedSection />
+      {emailStatus === "pending" && <Loader />}
+      {emailStatus !== "pending" && (
+        <>
+          <MainHeader />
+          <UnRead />
+          <SavedSection />
+        </>
+      )}
       <ToastContainer position="top-right" />
     </div>
   );

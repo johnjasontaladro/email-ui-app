@@ -27,7 +27,38 @@ describe("Renders the app correctly", () => {
 
   it("checks the initial count of unread messages", () => {
     cy.get(".section-unread").within(() => {
-      cy.get(".email-box").its("length").should("eq", 4);
+      cy.get(".email-box").its("length").should("eq", 2);
+    });
+  });
+
+  it("checks pagination if able to navigate to next page", () => {
+    cy.intercept("GET", "/email-ui-app/data/email-data.json", {
+      fixture: "email-three-record.json",
+    }).as("getEmailData");
+
+    cy.wait("@getEmailData");
+
+    cy.get('[data-cy="nav-next"]').click();
+    cy.get(".section-unread").within(() => {
+      cy.get(".email-box").its("length").should("eq", 1);
+    });
+  });
+
+  it("checks pagination if able to navigate to previous page", () => {
+    cy.intercept("GET", "/email-ui-app/data/email-data.json", {
+      fixture: "email-three-record.json",
+    }).as("getEmailData");
+
+    cy.wait("@getEmailData");
+
+    cy.get('[data-cy="nav-next"]').click();
+    cy.get(".section-unread").within(() => {
+      cy.get(".email-box").its("length").should("eq", 1);
+    });
+
+    cy.get('[data-cy="nav-prev"]').click();
+    cy.get(".section-unread").within(() => {
+      cy.get(".email-box").its("length").should("eq", 2);
     });
   });
 
@@ -42,16 +73,28 @@ describe("Renders the app correctly", () => {
   });
 
   it("checks if message is deleted from unread section", () => {
+    cy.intercept("GET", "/email-ui-app/data/email-data.json", {
+      fixture: "email-one-record.json",
+    }).as("getEmailData");
+
+    cy.wait("@getEmailData");
+
     cy.get(".section-unread").within(() => {
       cy.get(".email-box").first().find("input[type=checkbox]").click();
     });
     cy.contains("Delete").click();
     cy.get(".section-unread").within(() => {
-      cy.get(".email-box").its("length").should("eq", 3);
+      cy.get(".email-box").should("have.text", "No record found.");
     });
   });
 
   it("checks if message is deleted from saved section", () => {
+    cy.intercept("GET", "/email-ui-app/data/email-data.json", {
+      fixture: "email-one-record.json",
+    }).as("getEmailData");
+
+    cy.wait("@getEmailData");
+
     cy.get(".section-unread").within(() => {
       cy.get(".email-box").first().find("input[type=checkbox]").click();
     });
@@ -63,7 +106,7 @@ describe("Renders the app correctly", () => {
 
     cy.contains("Delete").click();
     cy.get(".section-saved").within(() => {
-      cy.get(".email-box").should("not.exist");
+      cy.get(".email-box").should("have.text", "No record found.");
     });
   });
 });

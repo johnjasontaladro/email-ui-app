@@ -1,8 +1,6 @@
 import SaveIcon from "@mui/icons-material/Save";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -11,11 +9,11 @@ import {
   setDeleted,
   setSaved,
 } from "../reducers/email";
+import Paginate from "./Paginate";
 
 function MainHeader() {
   const dispatch = useDispatch();
   const emailData = useSelector((state) => state.email.value);
-  const emailCount = emailData.rawData.length;
   const checkedData = emailData.checkedData;
   const checkedSaveData = emailData.checkedSaveData;
 
@@ -111,15 +109,7 @@ function MainHeader() {
           </button>
         </div>
         <div className="text-gray">
-          <span>
-            <ArrowBackIosIcon fontSize="small" />
-          </span>
-          <span>
-            {emailCount} of {emailCount}
-          </span>
-          <span>
-            <ArrowForwardIosIcon fontSize="small" />
-          </span>
+          <Paginate />
         </div>
       </div>
     </div>

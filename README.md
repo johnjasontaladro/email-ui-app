@@ -44,7 +44,7 @@ Start the server
 To run tests, run the following command
 
 ```bash
-  npm run test:cypress
+  npm run test:cypress-run
 ```
 
 ## Test Data
@@ -52,7 +52,7 @@ To run tests, run the following command
 Test data used located in
 
 ```bash
-  src/data/email-data.js
+  public/data/email-data.js
 ```
 
 ## Tech Stack

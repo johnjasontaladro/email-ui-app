@@ -1,4 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import apiCall from "../api/apiCall";
+
+export const getEmailData = createAsyncThunk("email/getData", async () => {
+  return await apiCall.getEmailData();
+});
 
 export const emailSlice = createSlice({
   name: "email",
@@ -6,16 +11,21 @@ export const emailSlice = createSlice({
     value: {
       rawData: [],
       unRead: [],
+      unReadCurrentItems: [],
+      currentPage: null,
+      totalPage: null,
       saved: [],
       deleted: [],
       checkedData: [],
       checkedSaveData: [],
     },
+    status: "idle",
   },
   reducers: {
     setData: (state, action) => {
       state.value.rawData = action.payload;
       state.value.unRead = action.payload;
+      state.value.unReadCurrentItems = action.payload;
     },
     setCheckedData: (state, action) => {
       state.value.checkedData.push(action.payload);
@@ -91,6 +101,24 @@ export const emailSlice = createSlice({
         state.value.deleted.push(element);
       });
     },
+    setPaginate: (state, action) => {
+      state.value.unReadCurrentItems = action.payload.currentItems;
+      state.value.currentPage = action.payload.currentPage;
+      state.value.totalPage = action.payload.totalPage;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getEmailData.pending, (state, action) => {
+      state.status = "pending";
+    });
+    builder.addCase(getEmailData.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.value.rawData = action.payload;
+      state.value.unRead = action.payload;
+    });
+    builder.addCase(getEmailData.rejected, (state, action) => {
+      state.status = "failed";
+    });
   },
 });
 
@@ -104,5 +132,6 @@ export const {
   clearCheckedSavedData,
   setSaved,
   setDeleted,
+  setPaginate,
 } = emailSlice.actions;
 export default emailSlice.reducer;
